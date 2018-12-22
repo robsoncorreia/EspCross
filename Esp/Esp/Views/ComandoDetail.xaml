@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Esp.Views.ComandoDetail"
+             Title="{Binding Titulo}">
+    <StackLayout Spacing="20" Padding="15">
+        <Label Text="Enviado :" FontSize="Small" />
+        <Label Text="{Binding Comando.Send}" FontSize="Small" />
+        <Label Text="Recebido :" FontSize="Small" />
+        <Label Text="{Binding Comando.Receive}" FontSize="Small" />
+        <Label Text="Ip :" FontSize="Small" />
+        <Label Text="{Binding Comando.IP}" FontSize="Small" />
+        <Label Text="Porta :" FontSize="Small" />
+        <Label Text="{Binding Comando.Port}" FontSize="Small" />
+        <Label Text="Data e Hora :" FontSize="Small" />
+        <Label Text="{Binding Comando.DateTime}" FontSize="Small" />
+        <Label Text="Tempo de resposta :" FontSize="Small" />
+        <Label Text="{Binding Comando.ResponseTime}" FontSize="Small" />
+        <Button x:Name="Reenviar" Text="Reenviar" Clicked="Reenviar_Clicked" />
+    </StackLayout>
+</ContentPage>

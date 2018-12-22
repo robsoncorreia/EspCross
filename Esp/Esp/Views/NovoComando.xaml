@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Esp.Views.NovoComando">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="cancel.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem Text="Save" Clicked="Save_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png" />
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Spacing="4" Padding="15">
+            <Label Text="Comando" FontSize="Small" />
+            <Entry Text="{Binding Comando.Send}" FontSize="Small" />
+            <Label Text="IP" FontSize="Small" />
+            <Entry Text="{Binding Comando.IP}" FontSize="Small" />
+            <Label Text="Port" FontSize="Small" />
+            <Entry Text="{Binding Comando.Port}" FontSize="Small" />
+            <Button x:Name="Enviar_UDP" Text="Enviar UDP" Clicked="Enviar_UDP_Clicked" />
+            <Button x:Name="Enviar_TCP" Text="Enviar TPC" Clicked="Enviar_TCP_Clicked" />
+            <Label Text="{Binding Comando.Receive}" FontSize="Small" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
