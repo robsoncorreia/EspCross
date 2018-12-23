@@ -26,7 +26,7 @@ namespace Esp.Views
             {
                 Send = "@ALTERNAR#",
                 Port = 9999,
-                IP = "192.168.1.200"
+                IP = "192.168.1.250"
             };
 
             BindingContext = this;
@@ -39,7 +39,7 @@ namespace Esp.Views
             MessagingCenter.Send(this, "AddItem", Comando);
             try
             {
-                TimeSpan duration = TimeSpan.FromMilliseconds(80);
+                TimeSpan duration = TimeSpan.FromMilliseconds(20);
                 Vibration.Vibrate(duration);
             }
             catch (FeatureNotSupportedException)
@@ -50,6 +50,7 @@ namespace Esp.Views
             {
                 // Other error has occurred.
             }
+            //await Navigation.PushModalAsync(new NavigationPage(new NovoComando()));
             await Navigation.PopModalAsync();
         }
 

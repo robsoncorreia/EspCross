@@ -5,12 +5,13 @@ using System.Runtime.CompilerServices;
 
 namespace Esp.Models
 {
+    [Table("Comando")]
     public class Comando : INotifyPropertyChanged
     {
-        private string _id;
+        private int _id;
 
         [PrimaryKey, AutoIncrement]
-        public string Id
+        public int Id
         {
             get { return _id; }
             set
@@ -78,10 +79,10 @@ namespace Esp.Models
 
         public Comando(string send, string ip, int port, string type)
         {
-            this.Send = send;
-            this.IP = ip;
-            this.Port = port;
-            this.Type = type;
+            Send = send;
+            IP = ip;
+            Port = port;
+            Type = type;
         }
 
         private string _responseTime;
@@ -150,7 +151,7 @@ namespace Esp.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

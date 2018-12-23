@@ -23,7 +23,21 @@ namespace Esp.ViewModels
             {
                 var newItem = item as Comando;
                 Comandos.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
+                try
+                {
+                    await DataStore.AddItemAsync(newItem);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
+            });
+
+            MessagingCenter.Subscribe<ComandoDetail, Comando>(this, "DeleteItem", async (obj, item) =>
+            {
+                var newItem = item as Comando;
+                Comandos.Remove(newItem);
+                await DataStore.DeleteItemAsync(newItem);
             });
         }
 
