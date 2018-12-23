@@ -1,9 +1,4 @@
-﻿using Esp.Models;
-using Esp.Views;
-using SQLite;
-using System;
-using System.Diagnostics;
-using System.IO;
+﻿using Esp.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

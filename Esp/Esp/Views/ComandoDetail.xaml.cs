@@ -3,9 +3,9 @@ using Esp.Models;
 using Esp.ViewModels;
 using System;
 using System.Diagnostics;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Essentials;
 
 namespace Esp.Views
 {
@@ -54,6 +54,19 @@ namespace Esp.Views
         {
             try
             {
+                TimeSpan duration = TimeSpan.FromMilliseconds(20);
+                Vibration.Vibrate(duration);
+            }
+            catch (FeatureNotSupportedException)
+            {
+                // Feature not supported on device
+            }
+            catch (Exception)
+            {
+                // Other error has occurred.
+            }
+            try
+            {
                 Reenviar.IsEnabled = false;
                 await udpService.SendAsync(viewModel.Comando.IP, viewModel.Comando.Port, viewModel.Comando.Send);
                 Reenviar.IsEnabled = true;
@@ -63,6 +76,12 @@ namespace Esp.Views
                 Reenviar.IsEnabled = true;
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        private async void Apagar_Clicked(object sender, EventArgs e)
+        {
+            MessagingCenter.Send(this, "DeleteItem", viewModel.Comando);
+            await Navigation.PushModalAsync(new NavigationPage(new ComandosPage()));
         }
     }
 }
