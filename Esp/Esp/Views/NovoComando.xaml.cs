@@ -1,6 +1,5 @@
 ﻿using ConfigurationFlexCloudHubBlaster.Service;
 using Esp.Models;
-using Esp.Services;
 using System;
 using System.Diagnostics;
 using Xamarin.Essentials;
@@ -14,8 +13,6 @@ namespace Esp.Views
     {
         private IUdpService udpService;
         private ITcpService tcpService;
-
-        private IDataStore<Comando> dataStore;
 
         public NovoComando()
         {
@@ -31,8 +28,6 @@ namespace Esp.Views
                 Port = 9999,
                 IP = "192.168.1.250"
             };
-
-            dataStore = new MockDataStore();
 
             BindingContext = this;
         }

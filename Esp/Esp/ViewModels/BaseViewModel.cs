@@ -1,17 +1,12 @@
-﻿using Esp.Models;
-using Esp.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace Esp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Comando> DataStore => DependencyService.Get<IDataStore<Comando>>() ?? new MockDataStore();
-
         private bool isBusy = false;
 
         public bool IsBusy

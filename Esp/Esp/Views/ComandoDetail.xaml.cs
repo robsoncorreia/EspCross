@@ -1,6 +1,5 @@
 ﻿using ConfigurationFlexCloudHubBlaster.Service;
 using Esp.Models;
-using Esp.Services;
 using Esp.ViewModels;
 using System;
 using System.Diagnostics;
@@ -19,8 +18,6 @@ namespace Esp.Views
 
         private ITcpService tcpService;
 
-        private IDataStore<Comando> dataStore;
-
         public Comando Comando { get; set; }
 
         public ComandoDetail()
@@ -32,8 +29,6 @@ namespace Esp.Views
                 Send = "@ALTERNAR",
                 Receive = "Tem alguem ai?"
             };
-
-            dataStore = new MockDataStore();
 
             udpService = new UdpService();
 
@@ -51,8 +46,6 @@ namespace Esp.Views
             udpService = new UdpService();
 
             tcpService = new TcpService();
-
-            dataStore = new MockDataStore();
 
             BindingContext = this.viewModel = viewModel;
         }
