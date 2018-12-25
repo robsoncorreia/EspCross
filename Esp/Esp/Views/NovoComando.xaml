@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Esp.Views.NovoComando">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
+        <ToolbarItem Text="Cancelar" Clicked="Cancel_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="cancel.png" />
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem Text="Save" Clicked="Save_Clicked">
+        <ToolbarItem Text="Salvar" Clicked="Save_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="save.png" />
@@ -26,6 +26,8 @@
             <Entry Text="{Binding Comando.IP}" FontSize="Small" />
             <Label Text="Port" FontSize="Small" />
             <Entry Text="{Binding Comando.Port}" FontSize="Small" />
+            <Label Text="Nome do Botão" FontSize="Small" />
+            <Entry Text="{Binding Comando.ButtonName}" FontSize="Small" />
             <Button x:Name="Enviar_UDP" Text="Enviar UDP" Clicked="Enviar_UDP_Clicked" />
             <Button x:Name="Enviar_TCP" Text="Enviar TPC" Clicked="Enviar_TCP_Clicked" />
             <Label Text="{Binding Comando.Receive}" FontSize="Small" />

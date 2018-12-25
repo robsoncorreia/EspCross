@@ -5,11 +5,11 @@ namespace Esp.Services
 {
     public interface IDataStore<T>
     {
-        Task<bool> AddItemAsync(T item);
+        Task<int> AddItemAsync(T item);
 
-        Task<bool> UpdateItemAsync(T item);
+        Task<int> UpdateItemAsync(T item);
 
-        Task<bool> DeleteItemAsync(object obj);
+        Task<int> DeleteItemAsync(object obj);
 
         Task<T> GetItemAsync(int id);
 

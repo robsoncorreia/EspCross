@@ -18,8 +18,8 @@ namespace Esp.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.Browse, Title="Comandos" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="Sobre" }
             };
 
             ListViewMenu.ItemsSource = menuItems;

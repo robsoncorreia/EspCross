@@ -2,70 +2,71 @@
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Esp.Services
 {
     public class MockDataStore : IDataStore<Comando>
     {
-        private List<Comando> items = new List<Comando>();
+        private readonly string dbPath = Path.Combine(
+     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+     "comando.db3");
 
         public MockDataStore()
         {
         }
 
-        public async Task<bool> AddItemAsync(Comando item)
+        public async Task<int> AddItemAsync(Comando item)
         {
-            Console.WriteLine("Creating database, if it doesn't already exist");
-            string dbPath = Path.Combine(
-                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                 "comandos.db3");
-            var db = new SQLiteConnection(dbPath);
-            db.CreateTable<Comando>();
-            db.Insert(item);
-            items.Add(item);
-            return await Task.FromResult(true);
+            SQLiteAsyncConnection db = new SQLiteAsyncConnection(dbPath);
+
+            await db.CreateTableAsync<Comando>();
+
+            return await db.InsertAsync(item);
         }
 
-        public async Task<bool> UpdateItemAsync(Comando item)
+        public async Task<int> UpdateItemAsync(Comando item)
         {
-            var oldItem = items.Where((Comando arg) => arg.Id == item.Id).FirstOrDefault();
-            items.Remove(oldItem);
-            items.Add(item);
+            SQLiteAsyncConnection db = new SQLiteAsyncConnection(dbPath);
 
-            return await Task.FromResult(true);
+            await db.CreateTableAsync<Comando>();
+
+            Comando comandoVelho = await db.GetAsync<Comando>(item.Id);
+
+            await db.DeleteAsync(comandoVelho);
+
+            return await db.InsertAsync(item);
         }
 
-        public async Task<bool> DeleteItemAsync(object obj)
+        public async Task<int> DeleteItemAsync(object obj)
         {
-            string dbPath = Path.Combine(
-                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                 "comandos.db3");
-            var db = new SQLiteConnection(dbPath);
+            SQLiteAsyncConnection db = new SQLiteAsyncConnection(dbPath);
+
+            await db.CreateTableAsync<Comando>();
 
             Comando comando = (Comando)obj;
 
-            db.Delete(comando);
-
-            return await Task.FromResult(true);
+            return await db.DeleteAsync(comando);
         }
 
         public async Task<Comando> GetItemAsync(int id)
         {
-            return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
+            SQLiteAsyncConnection db = new SQLiteAsyncConnection(dbPath);
+
+            await db.CreateTableAsync<Comando>();
+
+            return await db.Table<Comando>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Comando>> GetItemsAsync(bool forceRefresh = false)
         {
-            string dbPath = Path.Combine(
-                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                 "comandos.db3");
-            var db = new SQLiteConnection(dbPath);
-            db.CreateTable<Comando>();
-            return await Task.FromResult(db.Table<Comando>().ToList<Comando>());
+            SQLiteAsyncConnection db = new SQLiteAsyncConnection(dbPath);
+
+            await db.CreateTableAsync<Comando>();
+
+            return await db.Table<Comando>().ToListAsync();
         }
     }
 }

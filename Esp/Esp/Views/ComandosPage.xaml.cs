@@ -1,6 +1,7 @@
 ﻿using Esp.Models;
 using Esp.ViewModels;
 using System;
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +17,13 @@ namespace Esp.Views
             InitializeComponent();
 
             BindingContext = viewModel = new ComandosViewModel();
+
+            Appearing += AppearingPage;
+        }
+
+        private void AppearingPage(object sender, EventArgs e)
+        {
+            viewModel.LoadItemsCommand.Execute(null);
         }
 
         private async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)

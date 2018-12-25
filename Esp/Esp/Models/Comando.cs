@@ -1,13 +1,42 @@
-﻿using SQLite;
+﻿using ConfigurationFlexCloudHubBlaster.Service;
+using SQLite;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Esp.Models
 {
     [Table("Comando")]
     public class Comando : INotifyPropertyChanged
     {
+        private IUdpService updpService = new UdpService();
+
+        public ICommand ClickButtom
+        {
+            get
+            {
+                return new Command((e) =>
+                {
+                    var item = (e as Comando);
+                    updpService.SendAsync(IP, Port, Send);
+                });
+            }
+        }
+
+        private string _buttonName;
+
+        public string ButtonName
+        {
+            get { return _buttonName; }
+            set
+            {
+                _buttonName = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _id;
 
         [PrimaryKey, AutoIncrement]

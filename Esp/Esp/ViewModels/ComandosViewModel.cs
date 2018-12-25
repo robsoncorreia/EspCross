@@ -1,9 +1,13 @@
-﻿using Esp.Models;
+﻿using ConfigurationFlexCloudHubBlaster.Service;
+using Esp.Models;
+using Esp.Services;
 using Esp.Views;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Esp.ViewModels
@@ -13,8 +17,16 @@ namespace Esp.ViewModels
         public ObservableCollection<Comando> Comandos { get; set; }
         public Command LoadItemsCommand { get; set; }
 
+        private IDataStore<Comando> dataStore;
+
+        private readonly IUdpService udpService;
+
         public ComandosViewModel()
         {
+            udpService = new UdpService();
+
+            dataStore = new MockDataStore();
+
             Title = "Browse";
             Comandos = new ObservableCollection<Comando>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
@@ -22,10 +34,11 @@ namespace Esp.ViewModels
             MessagingCenter.Subscribe<NovoComando, Comando>(this, "AddItem", async (obj, item) =>
             {
                 var newItem = item as Comando;
-                Comandos.Add(newItem);
                 try
                 {
-                    await DataStore.AddItemAsync(newItem);
+                    int rows = await DataStore.AddItemAsync(newItem);
+                    if (rows == 1)
+                        Comandos.Add(newItem);
                 }
                 catch (Exception e)
                 {
@@ -36,8 +49,17 @@ namespace Esp.ViewModels
             MessagingCenter.Subscribe<ComandoDetail, Comando>(this, "DeleteItem", async (obj, item) =>
             {
                 var newItem = item as Comando;
-                Comandos.Remove(newItem);
-                await DataStore.DeleteItemAsync(newItem);
+
+                try
+                {
+                    int rows = await DataStore.DeleteItemAsync(newItem);
+                    if (rows == 1)
+                        Comandos.Remove(newItem);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                }
             });
         }
 
@@ -51,7 +73,7 @@ namespace Esp.ViewModels
             try
             {
                 Comandos.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = await App.Database.GetItemsAsync();
                 foreach (var item in items)
                 {
                     Comandos.Add(item);

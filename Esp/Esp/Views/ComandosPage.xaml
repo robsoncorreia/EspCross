@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Esp.Views.ComandosPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
+        <ToolbarItem Text="Adicionar" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="add.png" />
@@ -15,6 +15,7 @@
     <StackLayout>
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding Comandos}"
+                SelectedItem="{Binding SelectedComando}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadItemsCommand}"
@@ -26,6 +27,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
+                            <Button Text="{Binding ButtonName}" Command="{Binding ClickButtom}" />
                             <Label Text="{Binding IP}"
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemTextStyle}"

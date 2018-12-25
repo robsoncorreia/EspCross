@@ -1,5 +1,6 @@
 ﻿using ConfigurationFlexCloudHubBlaster.Service;
 using Esp.Models;
+using Esp.Services;
 using System;
 using System.Diagnostics;
 using Xamarin.Essentials;
@@ -13,6 +14,8 @@ namespace Esp.Views
     {
         private IUdpService udpService;
         private ITcpService tcpService;
+
+        private IDataStore<Comando> dataStore;
 
         public NovoComando()
         {
@@ -29,6 +32,8 @@ namespace Esp.Views
                 IP = "192.168.1.250"
             };
 
+            dataStore = new MockDataStore();
+
             BindingContext = this;
         }
 
@@ -36,7 +41,6 @@ namespace Esp.Views
 
         private async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Comando);
             try
             {
                 TimeSpan duration = TimeSpan.FromMilliseconds(20);
@@ -50,7 +54,11 @@ namespace Esp.Views
             {
                 // Other error has occurred.
             }
-            //await Navigation.PushModalAsync(new NavigationPage(new NovoComando()));
+
+            await App.Database.SaveItemAsync(Comando);
+
+            //MessagingCenter.Send(this, "AddItem", Comando);
+
             await Navigation.PopModalAsync();
         }
 
@@ -91,7 +99,7 @@ namespace Esp.Views
             {
                 Enviar_UDP.IsEnabled = false;
                 Enviar_TCP.IsEnabled = false;
-                Comando.Receive = await udpService.SendAsync(Comando.IP, (int)Comando.Port, Comando.Send);
+                Comando.Receive = await udpService.SendAsync(Comando.IP, Comando.Port, Comando.Send);
                 Enviar_UDP.IsEnabled = true;
                 Enviar_TCP.IsEnabled = true;
             }
@@ -105,7 +113,6 @@ namespace Esp.Views
 
         private async void Enviar_TCP_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Comando);
             try
             {
                 TimeSpan duration = TimeSpan.FromMilliseconds(20);
